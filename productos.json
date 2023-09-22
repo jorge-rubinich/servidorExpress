@@ -8,7 +8,7 @@
         "status": true,
         "stock": 34,
         "category": "smartphones",
-        "thumbnails": "https://i.dummyjson.com/data/products/2/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/2/1.jpg"]
     },
     {
         "id": 2,
@@ -19,7 +19,7 @@
         "status": true,
         "stock": 36,
         "category": "smartphones",
-        "thumbnails": "https://i.dummyjson.com/data/products/3/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/3/1.jpg"]
     },
     {
         "id": 3,
@@ -30,7 +30,7 @@
         "status": true,
         "stock": 123,
         "category": "smartphones",
-        "thumbnails": "https://i.dummyjson.com/data/products/4/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/4/1.jpg"]
     },
     {
         "id": 4,
@@ -41,7 +41,7 @@
         "status": true,
         "stock": 32,
         "category": "smartphones",
-        "thumbnails": "https://i.dummyjson.com/data/products/5/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/5/1.jpg"]
     },
     {
         "id": 5,
@@ -52,7 +52,7 @@
         "status": true,
         "stock": 83,
         "category": "laptops",
-        "thumbnails": "https://i.dummyjson.com/data/products/6/1.png"
+        "thumbnails": ["https://i.dummyjson.com/data/products/6/1.png"]
     },
     {
         "id": 6,
@@ -63,7 +63,7 @@
         "status": true,
         "stock": 96,
         "category": "laptops",
-        "thumbnails": "https://i.dummyjson.com/data/products/9/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/9/1.jpg"]
     },
     {
         "id": 7,
@@ -74,7 +74,7 @@
         "status": true,
         "stock": 89,
         "category": "laptops",
-        "thumbnails": "https://i.dummyjson.com/data/products/10/1.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/10/1.jpg"]
     },
     {
         "id": 8,
@@ -85,7 +85,7 @@
         "status": true,
         "stock": 17,
         "category": "home-decoration",
-        "thumbnail": "https://i.dummyjson.com/data/products/27/thumbnail.webp"
+        "thumbnails": ["https://i.dummyjson.com/data/products/27/thumbnail.webp"]
     },
     {
         "id": 9,
@@ -96,7 +96,7 @@
         "status": true,
         "stock": 54,
         "category": "home-decoration",
-        "thumbnail": "https://i.dummyjson.com/data/products/28/thumbnail.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/28/thumbnail.jpg"]
     },
     {
         "id": 10,
@@ -108,7 +108,7 @@
         "stock": 7,
         "brand": "luxury palace",
         "category": "home-decoration",
-        "thumbnail": "https://i.dummyjson.com/data/products/29/thumbnail.webp"
+        "thumbnails": ["https://i.dummyjson.com/data/products/29/thumbnail.webp"]
     },
     {
         "id": 11,
@@ -120,6 +120,6 @@
         "stock": 54,
         "brand": "Golden",
         "category": "home-decoration",
-        "thumbnail": "https://i.dummyjson.com/data/products/30/thumbnail.jpg"
+        "thumbnails": ["https://i.dummyjson.com/data/products/30/thumbnail.jpg"]
     }
     ]

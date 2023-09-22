@@ -96,13 +96,15 @@ class ProductManager {
     }
 
     async getProductById(id) {
-        // Retorna el producto buscado o undefined.
+        // Return the product(s) with the given id(s)
         this.products = await this.retreiveProducts();
         const idArray= id.split(",")
         if (idArray.length==1) {
+            // have an only id
             const searchedCode = this.products.find(prod => prod.id ==id)
             return searchedCode
         }else {
+            // have more than one id.
             const prodArray= idArray.map( id => {
                 const searchedCode = this.products.find(prod => prod.id ==id)
                 
@@ -115,7 +117,7 @@ class ProductManager {
     }
 
     async getProducts(queryObj) {
-        // Devuelve el arreglo completo de productos
+        // return the complete set of products, or the given amount (if 'limit' is in the query)
         const {limit} = queryObj
         this.products = await this.retreiveProducts();
         return this.products.slice(0, limit)

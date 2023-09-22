@@ -1,7 +1,7 @@
 import express, { query } from "express"
 import {manager} from "./productManager.js"
 
-const PORT = 3000
+const PORT = 8080
 const app= express()
 
 app.get("/products", async (req, res)=>{
@@ -32,4 +32,8 @@ app.get("/products/:pid", async (req, res)=>{
 
 app.listen(PORT, ()=>{
     console.log("Escuchando en Puerto "+PORT)
+    console.log("localhost:8080/products                      retorna todos los productos \n"+ 
+"localhost:8080/products? limit=n             retorna los primeros n productos.\n"+
+"localhost:8080/products/x                    retorna el producto id x\n"+
+"localhost:8080/products/x1,..,xn             retorna todos los productos con las ids pedidas.")
 })

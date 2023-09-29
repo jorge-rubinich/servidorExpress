@@ -1,34 +1,19 @@
-import express, { query } from "express"
-import {manager} from "./productManager.js"
+import { Router } from "express"
+import express from "express"
+import productsRouter from "./routes/products.router.js"
+import cartsRouter from "./routes/carts.router.js"
+import { __dirname } from "./utils.js"
 
 const PORT = 8080
 const app= express()
+const router = new Router()
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use("/static", express.static(__dirname + '/public'));
 
-app.get("/products", async (req, res)=>{
-    try {
-        const results = await manager.getProducts(req.query)
-        const info={"count": results.length}
-        res.status(200).send({status: "success",info , results})
-    } catch (error) {
-        res.status(500).send({status: "error", error: error.message})   
-    }
-
-})
-
-app.get("/products/:pid", async (req, res)=>{
-    const {pid} = req.params
-    try {
-        const results = await manager.getProductById(pid)
-        if (results) {
-            res.status(200).send({status: "success", results})   
-        }  else {
-            res.status(404).send({status: "error", error: "Id "+pid+" not found"})
-        }   
-    } catch (error) {
-        res.status(500).send({status: "error", error: error.message})   
-    }
-})
-
+// routes
+app.use("/api/products", productsRouter)
+app.use("/api/carts", cartsRouter)
 
 app.listen(PORT, ()=>{
     console.log("Escuchando en Puerto "+PORT)

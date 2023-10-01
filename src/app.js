@@ -16,9 +16,4 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 
 app.listen(PORT, ()=>{
-    console.log("Escuchando en Puerto "+PORT)
-    console.log("localhost:8080/products                      retorna todos los productos \n"+ 
-"localhost:8080/products? limit=n             retorna los primeros n productos.\n"+
-"localhost:8080/products/x                    retorna el producto id x\n"+
-"localhost:8080/products/x1,..,xn             retorna todos los productos con las ids pedidas.")
-})
+    console.log("Escuchando en Puerto "+PORT)})

@@ -55,20 +55,16 @@ class ProductManager {
         this.products = await this.retreiveProducts()
         const index = this.products.findIndex(element => element.id == idToUpdate)
         if (index===-1) { return "El producto con id "+idToUpdate+" no existe."}
-        // validate the object with updates
-        const validation = this.validProduct(updatesObj, "update")
-        if (validation===undefined) {
-            // validation is undefined -> no errors
-            const originalProduct = this.products[index]
-            for (let key in originalProduct) {
-                if (!(updatesObj[key]===undefined ||key==="id")) {
-                    originalProduct[key] = updatesObj[key]
-                }
-               }
-            this.products[index] = originalProduct
-            await this.saveProducts(this.products)
-        } 
-        return validation
+        
+        const originalProduct = this.products[index]
+        for (let key in originalProduct) {
+            if (!(updatesObj[key]===undefined ||key==="id")) {
+                originalProduct[key] = updatesObj[key]
+            }
+        }
+        this.products[index] = originalProduct
+        await this.saveProducts(this.products)
+        return originalProduct
     }
 
     async deleteProduct(id) {

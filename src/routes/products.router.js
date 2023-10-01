@@ -1,6 +1,8 @@
 import { Router } from "express"
 
 import manager from "../managers/productManager.js"
+import {dataCheck, updateCheck} from "../middlewares/validations.js"
+import { validationResult } from "express-validator"
 
 const router =  Router()
 
@@ -25,12 +27,14 @@ router.get("/:pid", async (req, res)=>{
         }  else {
             res.status(404).send({status: "error", error: "Id "+pid+" not found"})
         }   
-    } catch (error) {
+    } catch (error ) {
         res.status(500).send({status: "error", error: error.message})   
     }
 })
 
-router.post("/", async (req, res)=>{
+router.post("/",  dataCheck() , async (req, res)=>{
+    let errors = validationResult (req) ; 
+    if ( !errors.isEmpty()) return res.json({errors: errors.array() })
     try {
         const newProduct= req.body
         const result = await manager.addProduct(newProduct)
@@ -46,7 +50,10 @@ router.post("/", async (req, res)=>{
 })
 
 // update the product with the given id with the given product
-router.put("/:pid", async (req, res)=>{
+router.put("/:pid", updateCheck(), async (req, res)=>{
+    let errors = validationResult (req) ; 
+    if ( !errors.isEmpty()) return res.json({errors: errors.array() })
+
     try {
         const {pid} = req.params
         const updatesObj= req.body

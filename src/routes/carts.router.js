@@ -25,7 +25,7 @@ router.get("/:cid", async (req, res)=>{
         } else {
             res.status(404).send({status: "error", error: "cart Id "+cid+" not found"})
         }
-    } catch (error) {
+    } catch (error) { 
         res.status(500).send({status: "error", error: error.message})   
     }
 })

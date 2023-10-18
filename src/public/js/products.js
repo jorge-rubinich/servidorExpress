@@ -176,7 +176,7 @@ function createCard(product) {
 
 
 
-// Asocia un evento click al elemento SVG
+// Asociate the clic to capture the click on the SVG images
 document.addEventListener('click',handleImageClick)
 const addForm = document.getElementById("addForm");
 

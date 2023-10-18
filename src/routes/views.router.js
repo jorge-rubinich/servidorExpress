@@ -3,11 +3,22 @@ import { Router } from "express"
 const router =  Router()
 import manager from "../managers/productManager.js"
 
-router.get("/realtimeproducts", async (req, res)=>{
+router.get("/", async (req, res)=>{
     try {
         const products = await manager.getProducts(req.query)
         const info={"count": products.length}
-        res.render("products", {info , products})
+        res.render("home", {info , products})
+    } catch (error) {
+        res.status(500).send({status: "error", error: error.message})   
+    }
+
+})
+
+router.get("/realTimeProducts", async (req, res)=>{
+    try {
+        const products = await manager.getProducts(req.query)
+        const info={"count": products.length}
+        res.render("realTimeProducts", {info , products})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
     }

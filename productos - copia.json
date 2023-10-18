@@ -124,7 +124,6 @@
         "price": 60,
         "status": true,
         "stock": 7,
-        "brand": "luxury palace",
         "category": "home-decoration",
         "thumbnails": [
             "https://i.dummyjson.com/data/products/29/thumbnail.webp"
@@ -138,7 +137,6 @@
         "price": 30,
         "status": true,
         "stock": 54,
-        "brand": "Golden",
         "category": "home-decoration",
         "thumbnails": [
             "https://i.dummyjson.com/data/products/30/thumbnail.jpg"

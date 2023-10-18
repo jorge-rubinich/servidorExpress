@@ -34,14 +34,15 @@ router.get("/:pid", async (req, res)=>{
 
 router.post("/",  dataCheck() , async (req, res)=>{
     let errors = validationResult (req) ; 
-    if ( !errors.isEmpty()) return res.json({errors: errors.array() })
+    if ( !errors.isEmpty()) return res.status(400).send({status: "error", error: errors.errors })
     try {
         const newProduct= req.body
         const result = await manager.addProduct(newProduct)
-        if (!result) {
-            res.status(200).send({status: "success", message: "Product added"})   
+        if (result.status=="success") {
+            res.status(200).send(result)   
         } else {
-            res.status(400).send({status: "error", error: result})   
+            console.log(result)
+            res.status(400).send(result)   
         }
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
@@ -57,8 +58,10 @@ router.put("/:pid", updateCheck(), async (req, res)=>{
     try {
         const {pid} = req.params
         const updatesObj= req.body
+        console.log(updatesObj)
         const result = await manager.updateProduct(pid, updatesObj)
-        if (!result) {
+        console.log(result)
+        if (result) {
             res.status(200).send({status: "success", message: "Product updated"})   
         } else {
             res.status(400).send({status: "error", error: result})   

@@ -1,0 +1,37 @@
+{{! Description: Products view }}  
+
+<div class="container">
+    <div class="row" id="productCards">
+    </div>
+</div>
+
+<tr>
+
+<form id="addForm">
+    <div>
+        Codigo:<input type="text" class="text" id="formCode">
+    </div>
+    <div>
+        Nombre:<input type="text" class="text" id="formTitle">
+    </div>
+    <div>
+        Descripción:<input type="text" class="text" id="formDescription">
+    </div>
+    <div>
+        Categoria:<input type="text" class="text" id="formCategory">
+    </div>
+    <div>
+        Precio:<input type="text" class="text" id="formPrice">
+    </div>
+    <div>
+        Thumbnail:<input type="text" class="text" id="formThumbnail">
+    </div>
+    <div>
+        Stock:<input type="text" class="text" id="formStock">
+    </div>
+    <input type="submit" value="Agregar">
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>
+

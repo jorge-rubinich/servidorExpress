@@ -9,7 +9,7 @@ const dataCheck = () => {
         ('please enter only letters').isLength({min: 3, max: 40}), 
         body('description').trim().not().isEmpty().isLength({min: 3, max: 150}).isString().withMessage
         ('please enter only characters'),
-        body('status').trim().isBoolean().withMessage
+        body('status').optional().trim().isBoolean().withMessage
         ('status must be true or false'),
         body( 'stock' ).trim().not().isEmpty().isInt().withMessage
         ('please enter only numbers'),

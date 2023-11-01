@@ -6,9 +6,14 @@ import { __dirname } from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import socketServer from "./sockets/socketServer.js"
+import sysVars from "./config/index.js"
 
+const {PORT} = sysVars.app
+const {URI} = sysVars.database
+const connectDB = sysVars.connectDB
 
-const PORT = 8080
+connectDB(URI)
+
 const app= express()
 const router = new Router()
 app.use(express.json())
@@ -32,15 +37,4 @@ const httpServer = app.listen(PORT, ()=>{
 
 socketServer.createSocketServer(httpServer)
     
-
-/* IoServer.on("connection", async (socket)=>{
-    console.log("Nuevo cliente conectado!")
-    const products = await manager.getProducts({})
-    socket.emit("products", products)
-    
-    socket.on("update", async (data)=>{
-        const products = await manager.getProducts({})
-        socket.emit("products", products)
-    }) */
-
 

@@ -1,4 +1,4 @@
-import manager from "../managers/productManager.js"
+import manager from "../dao/mongo/productMongoManager.js"
 
 function realTimeManager(io, socket) {
   

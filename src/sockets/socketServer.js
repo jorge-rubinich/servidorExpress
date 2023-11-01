@@ -1,6 +1,6 @@
 import {Server} from "socket.io"
-import realTimeManager  from "./realTimeManager.js"
-
+import realTimeSocketManager  from "./realTimeManager.js"
+import chatSocketManager from "./chatSocketManager.js"
 class SocketServer {
   static instance = null
 
@@ -22,7 +22,8 @@ class SocketServer {
         console.log(`Socket Disonnected: ${socket.id}; ${reason}`)
       });
 
-      realTimeManager(SocketServer.instance, socket)
+      //realTimeSocketManager(SocketServer.instance, socket)
+      chatSocketManager(SocketServer.instance, socket)
     });
 
     return SocketServer.instance;

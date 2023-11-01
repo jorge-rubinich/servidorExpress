@@ -1,6 +1,6 @@
 import { Router } from "express"
 
-import manager from "../managers/productManager.js"
+import manager from "../dao/mongo/productMongoManager.js"
 import {dataCheck, updateCheck} from "../middlewares/validations.js"
 import { validationResult } from "express-validator"
 
@@ -9,9 +9,9 @@ const router =  Router()
 
 router.get("/", async (req, res)=>{
     try {
-        const results = await manager.getProducts(req.query)
+        const results = await manager.getAll()
         const info={"count": results.length}
-        res.status(200).send({status: "success",info , results})
+        res.status(200).send({status: "success", results})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
     }
@@ -21,7 +21,7 @@ router.get("/", async (req, res)=>{
 router.get("/:pid", async (req, res)=>{
     const {pid} = req.params
     try {
-        const results = await manager.getProductById(pid)
+        const results = await manager.getById(pid)
         if (results) {
             res.status(200).send({status: "success", results})   
         }  else {
@@ -37,7 +37,7 @@ router.post("/",  dataCheck() , async (req, res)=>{
     if ( !errors.isEmpty()) return res.status(400).send({status: "error", error: errors.errors })
     try {
         const newProduct= req.body
-        const result = await manager.addProduct(newProduct)
+        const result = await manager.add(newProduct)
         if (result.status=="success") {
             res.status(200).send(result)   
         } else {
@@ -59,7 +59,7 @@ router.put("/:pid", updateCheck(), async (req, res)=>{
         const {pid} = req.params
         const updatesObj= req.body
         console.log(updatesObj)
-        const result = await manager.updateProduct(pid, updatesObj)
+        const result = await manager.update(pid, updatesObj)
         console.log(result)
         if (result) {
             res.status(200).send({status: "success", message: "Product updated"})   
@@ -75,7 +75,7 @@ router.put("/:pid", updateCheck(), async (req, res)=>{
 router.delete("/:pid", async (req, res)=>{
     try {
         const {pid} = req.params
-        const result = await manager.deleteProduct(pid)
+        const result = await manager.delete(pid)
         if (result) {
             res.status(200).send({status: "success"})
         } else {

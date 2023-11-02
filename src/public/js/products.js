@@ -119,7 +119,7 @@ async function addProduct(e) {
     const title = formTitle.value
     const description = formDescription.value
     const price = formPrice.value
-    const thumbnail = formThumbnail.value
+    const thumbnails = formThumbnail.value
     const code = formCode.value
     const stock = formStock.value
     const category = formCategory.value
@@ -131,16 +131,21 @@ async function addProduct(e) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({price, title, description, thumbnail, code, stock, category, status: true})
+            body: JSON.stringify({price, title, description, thumbnails, code, stock, category, status: true})
         }
         await fetch(url, options)
         .then((response)=>{
-            // evaluate the API response
-            console.log(response)
-            console.log(response.error)
-            if (!response.ok) throw new Error(response.errors)
-        })
-    } catch (error) {
+            if (response.status == 200) {
+                return response.json()
+            } else {
+                return response.json()
+                .then((response)=>{
+                    // evaluate the API response
+                    throw new Error(response.error)
+                })
+            }
+        })   
+    }    catch (error) {
         console.log(error)
         return false
                 
@@ -161,10 +166,10 @@ function createCard(product) {
             <div style="display: flex; justify-content: space-between">
                 <div><b>$${product.price}</b></div>
                 <div style="background-color: #ffffff; color: #ffffff; padding: 5px; border-radius: 5px; width: 50px; cursor: pointer">
-                    <img src="/imgs/delete.svg" alt="Eliminar producto"  data-product-id="${product.id}" class="productAction productDelete">
+                    <img src="/imgs/delete.svg" alt="Eliminar producto"  data-product-id="${product._id}" class="productAction productDelete">
                 </div>
                 <div style="background-color: #ffffff; color: #ffffff; padding: 5px; border-radius: 5px; width: 50px; cursor: pointer">
-                    <img src="/imgs/price_change.svg" alt="cambiar precio del producto" data-product-id="${product.id}" data-product-price="${product.price}" class="productAction productPriceChange">
+                    <img src="/imgs/price_change.svg" alt="cambiar precio del producto" data-product-id="${product._id}" data-product-price="${product.price}" class="productAction productPriceChange">
                 </div>
             </div>
 

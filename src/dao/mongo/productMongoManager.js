@@ -6,7 +6,7 @@ class ProductMongoManager {
     }
 
     async getAll() {
-        return await this.productModel.findAll().lean()
+        return await this.productModel.find().lean()
     }
 
     async getPaged(obj) {

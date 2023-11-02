@@ -12,8 +12,7 @@ function chatManager(io, socket) {
     }
  
     async function haveNewMessage(data) {
-        console.log(data)
-        await manager.add(data)
+        const result = await manager.add(data)
         io.emit("message", data)
     }
   

@@ -4,7 +4,7 @@
 console.log('Socket')
 const socket = io()
 let myUser
-const messageLog = document.getElementById('messages')
+const chatArea = document.getElementById('messages')
 
 document.querySelector('.chatbox button').addEventListener('click', function() {
   var message = document.querySelector('.chatbox input[type="text"]').value;
@@ -28,21 +28,22 @@ socket.on("chatStarted", (msgHistory) => {
   msgHistory.forEach(message => { 
       msgLog += `
       <li>
-        ${(message.user===user)? "__________":""}
+        ${(message.user===myUser)? "__________":""}
         <strong>${message.user} dice</strong>: ${message.message}
       </li>
       `
   });
 
-  messageLog.innerHTML = msgLog
+  console.log(msgLog)
+  chatArea.innerHTML = msgLog
 })
 
 
 socket.on("message", (data) => {
-  messageLog.innerHTML += `
+  chatArea.innerHTML += `
   <li>
 
-    ${(data.user===user)? "__________":""}
+    ${(data.user===myUser)? "__________":""}
     <strong>${data.user} dice</strong>: ${data.message}
   </li>
   `

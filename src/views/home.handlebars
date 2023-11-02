@@ -1,29 +1,69 @@
-{{! Description: Products view }}  
+{{! Description: Products view }}
 <div class="container">
     <div class="row" id="productCards">
         {{#each payload}}
-            <div class="card" style="width: 18rem; margin: 1rem">
-                <img src="{{thumbnails}}" class="card-img-top" alt="{{title}}">
-                <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
-                    <p class="card-text">{{tdescription}}</p>
-                </div>
-                <div style="display: flex; justify-content: space-between">
-                    <div><b>${{price}}</b></div>
-                    <button class="btn btn-primary">Comprar</button>
-                </div>
-
-
+        <div class="card" style="width: 18rem; margin: 1rem">
+            <img src="{{thumbnails}}" class="card-img-top" alt="{{title}}">
+            <div class="card-body">
+                <h5 class="card-title">{{title}}</h5>
+                <p class="card-text">{{tdescription}}</p>
             </div>
+            <div style="display: flex; justify-content: space-between">
+                <div><b>${{price}}</b></div>
+                <button class="btn btn-primary">Comprar</button>
+            </div>
+
+
+        </div>
         {{/each}}
     </div>
     <div class="pagination">
         {{#if hasPrevPage}}
-            <a href="{{prevLink}}">Previous</a>
+        <a href="{{prevLink}}">Anterior</a>
+        <span>- | -</span> 
         {{/if}}
-        <span>Page {{page}} of {{totalPages}}</span>
+        <span>Pagina {{page}} de {{totalPages}}</span>
         {{#if hasNextPage}}
-            <a href="{{nextLink}}">Next</a>
+        <span>- | -</span>
+        <a href="{{nextLink}}">Siguiente</a>
         {{/if}}
     </div>
-</div>
+
+    <!-- Formulario de chat oculto -->
+    <div class="offcanvas offcanvas-end" id="chat">
+        <div class="offcanvas-header">
+            <h1 class="offcanvas-title">chateamos?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column vh-100">
+            <div class="messageLog h-50 border p-2 overflow-auto" id="messages">
+
+            </div>
+            <div class="chatbox row">
+                <div class="col-9">
+                    <textarea class="form-control form-control-lg" placeholder="Message" id="messageArea"></textarea>
+                </div>
+                <div class="col-3" id="sendMsgButton">
+                    <button class="btn btn-primary w-100">Enviar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        <!-- fin Formulario de chat oculto -->
+
+
+        <div class="fixed-bottom d-flex justify-content-end m-3">
+            <div class="form-inline d-flex w-50  border p-2 rounded">
+                <div class="form-group mb-0 w-75">
+                    <input type="email" class="form-control w-100" id="email"
+                        placeholder="ingrese un correo electronico">
+                </div>
+                <div>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chat">
+                        chat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -5,9 +5,9 @@ console.log('Socket')
 const socket = io()
 let myUser
 const chatArea = document.getElementById('messages')
-
-document.querySelector('.chatbox button').addEventListener('click', function() {
-  var message = document.querySelector('.chatbox input[type="text"]').value;
+document.getElementById('sendMsgButton').addEventListener('click', function() {
+  var message = document.getElementById('messageArea').value
+  if (message === "") return
   socket.emit('newMessage', {user: myUser, message}); 
 });
 
@@ -49,53 +49,24 @@ socket.on("message", (data) => {
   `
 }) 
 
+document.addEventListener('DOMContentLoaded', function() {
+  var emailInput = document.getElementById('email')
+  var chatButton = document.querySelector('[data-bs-target="#chat"]')
+  chatButton.disabled = true
 
-Swal.fire({
-    title: 'Ingresa tu correo electrónico:',
-    input: 'email', 
-    inputAttributes: {
-      autocapitalize: 'off'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Enviar',
-    cancelButtonText: 'Cancelar',
-  })
-  .then((result) => {
-    if (result.isConfirmed) {
-        myUser = result.value
-        socket.emit('newUser', myUser)
-    } else
-    {
-        window.location.href = "/"
-    }
-  })
+  emailInput.addEventListener('input', function() {
+      var email = emailInput.value
+      var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) // Simple email validation
 
-// get the session.user to use the username in the chat
-/* fetch('/api/session/datos-sesion')
-  .then(response => response.json())
-  .then(data => {
-    // Access data session in the client and 
-    // use email as the username
-    user = data.userSession.email 
-    socket.emit('new-user', user)
-  })
-  .catch(error => {
-    console.log('Error:', error);
-  }); */
+      chatButton.disabled = !isValidEmail
+      })
+
+  chatButton.addEventListener('click', function() {
+      myUser = emailInput.value
+      socket.emit('newUser', myUser)
+      })
+     })
 
 
 
 
-
-/* chatbox.addEventListener('keyup', evt => {
-    if (evt.key==='Enter') {
-        if (chatbox.value.trim().length>0) {
-            socket.emit('new-message', {
-                user, message: chatbox.value
-            })
-            chatbox.value=''
-        }
-    }
-})
-
-*/

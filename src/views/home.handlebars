@@ -6,11 +6,15 @@
             <img src="{{thumbnails}}" class="card-img-top" alt="{{title}}">
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
-                <p class="card-text">{{tdescription}}</p>
+                <p class="card-text">{{description}}</p>
             </div>
             <div style="display: flex; justify-content: space-between">
                 <div><b>${{price}}</b></div>
-                <button class="btn btn-primary">Comprar</button>
+                {{#if ../user}}
+                <button class="btn btn-primary buyButton" data-product-id="{{_id}}" onclick="addToCart({{_id}})">Comprar</button>
+                {{else}}
+                <button class="btn btn-primary" onclick="signIn()">Inicia Sesión</button>
+                {{/if}}
             </div>
 
 
@@ -20,14 +24,14 @@
     <div class="pagination">
         {{#if hasPrevPage}}
         <a href="{{prevLink}}">Anterior</a>
-        <span>- | -</span> 
+        <span>- | -</span>
         {{/if}}
         <span>Pagina {{page}} de {{totalPages}}</span>
         {{#if hasNextPage}}
         <span>- | -</span>
         <a href="{{nextLink}}">Siguiente</a>
         {{/if}}
-    </div>
+    </div> 
 
     <!-- Formulario de chat oculto -->
     <div class="offcanvas offcanvas-end" id="chat">
@@ -50,20 +54,26 @@
             </div>
         </div>
     </div>
-        <!-- fin Formulario de chat oculto -->
+    <!-- fin Formulario de chat oculto -->
 
-
-        <div class="fixed-bottom d-flex justify-content-end m-3">
-            <div class="form-inline d-flex w-50  border p-2 rounded">
-                <div class="form-group mb-0 w-75">
-                    <input type="email" class="form-control w-100" id="email"
-                        placeholder="ingrese un correo electronico">
-                </div>
-                <div>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chat">
-                        chat
-                    </button>
-                </div>
+    <!-- boton para iniciar chat -->
+    <div class="fixed-bottom d-flex justify-content-end m-3">
+        <div class="form-inline d-flex w-50  border p-2 rounded" id="chatForm">
+            <div class="form-group mb-0 w-75">
+                <input type="email" class="form-control w-100" id="email" placeholder="ingrese un correo electronico" value="{{user.email}}">
+            </div>
+            <div>
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chat">
+                    chat
+                </button>
             </div>
         </div>
     </div>
+    <!-- fin boton para iniciar chat -->
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/chat.js"></script>
+```

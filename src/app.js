@@ -2,11 +2,15 @@ import { Router } from "express"
 import express from "express"
 import productsRouter from "./routes/products.router.js"
 import cartsRouter from "./routes/carts.router.js"
+import sessionRouter from "./routes/sessions.router.js" 
+import usersRouter from "./routes/users.router.js"
 import { __dirname } from "./utils.js"
 import handlebars from "express-handlebars"
 import viewsRouter from "./routes/views.router.js"
 import socketServer from "./sockets/socketServer.js"
 import sysVars from "./config/index.js"
+import session from "express-session"
+import MongoStore from "connect-mongo"
 
 const {PORT} = sysVars.app
 const {URI} = sysVars.database
@@ -20,6 +24,13 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
 
+// Set session
+app.use(session({
+    store: new MongoStore({mongoUrl: URI}),
+    secret: "secret",
+    cookie: {maxAge: 60000},
+}))
+
 
 // Set handlebars
 app.engine("handlebars", handlebars.engine({}))
@@ -30,6 +41,8 @@ app.set("view engine", "handlebars")
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
+app.use("/api/sessions", sessionRouter)
+app.use("/api/users", usersRouter)
 
 const httpServer = app.listen(PORT, ()=>{
     console.log("Escuchando en Puerto "+PORT)})

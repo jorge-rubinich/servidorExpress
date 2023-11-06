@@ -2,10 +2,10 @@ import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
     
-        first_name: {type: String, required: true, maxlength: 50, unique: true},
+        first_name: {type: String, required: true, maxlength: 50},
         last_name: {type: String, required: true, maxlength: 50},
-        email: {type: String, required: true, maxlength: 100},
-        password: {type: String, required: true, maxlength: 20, unique: true},
+        email: {type: String, required: true, maxlength: 100, unique: true},
+        password: {type: String, required: true, maxlength: 20},
         role: {type: String, default: "user", maxlength: 100},
         timestamp: {type: Date, default: Date.now()}
 

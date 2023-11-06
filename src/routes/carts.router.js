@@ -1,14 +1,15 @@
 import { Router } from "express"
 
-import {manager} from "../dao/fs/cartManager.js"
-import prodManager from "../dao/fs/productManager.js"
+import manager from "../dao/mongo/cartMongoManager.js"
+import prodManager from "../dao/mongo/productMongoManager.js"
 
 const router =  Router()
 
 // Create a new cart
 router.post("/", async (req, res)=>{
     try {
-        const results = await manager.addCart()
+        console.log(req.body)
+        const results = await manager.add(req.body)
         res.status(200).send({status: "success", results})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
@@ -19,7 +20,7 @@ router.post("/", async (req, res)=>{
 router.get("/:cid", async (req, res)=>{
     const {cid} = req.params
     try {
-        const results = await manager.getCartById(cid)
+        const results = await manager.getById(cid)
         if (results){
             res.status(200).send({status: "success", results})   
         } else {

@@ -20,14 +20,15 @@
             </div>
             <div class="col-4 text-center">
                 {{#if user}}
-                <span>Welcome, {{user.name}}</span>
-                <button onclick="location.href='/logout'">Logout</button>
+                <span>Bienvenido, {{user.first_name}}</span>
+                <button onclick="signOut()">Logout</button>
                 {{else}}
-                <button onclick="location.href='/login'">Login</button>
+                <button onclick="signUp()">Crear Cuenta</button>
+                <button onclick="signIn()">Ingresar</button>
                 {{/if}}
             </div>
             <div class="col-4 text-right">
-                <button onclick="location.href='/cart'">Cart</button>
+                <button onclick="location.href='/cart'"><img src="/imgs/cart.svg" alt="Mi carrito"></button>
             </div>
 
 
@@ -38,6 +39,4 @@
 </body>
 
 </html>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/chat.js"></script>
+<script src="/js/main.js"></script>

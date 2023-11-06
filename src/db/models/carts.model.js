@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 
 const cartSchema = new mongoose.Schema({
-    clientId: {type: String, required: true, maxlength: 50},
+
+    email: {type: String, required: true, maxlength: 100},
     products: [{
-        product: {type: Schema.Types.ObjectId, ref: 'products'},
+        product: {type: mongoose.Schema.Types.ObjectId, ref: 'products'},
         quantity: {type: Number, default: 1}
     }]   
 })

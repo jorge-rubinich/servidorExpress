@@ -28,7 +28,8 @@ router.get("/", async (req, res)=>{
         hasPrevPage: results.hasPrevPage,
         hasNextPage: results.hasNextPage, 
         prevLink: results.hasPrevPage? createLink(req.query, results.prevPage) : null,
-        nextLink: results.hasNextPage? createLink(req.query, results.nextPage) : null
+        nextLink: results.hasNextPage? createLink(req.query, results.nextPage) : null,
+        user : req.session.user
         }
         res.render("home",retObj)   
     } catch (error) {

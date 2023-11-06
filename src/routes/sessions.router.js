@@ -37,7 +37,7 @@ router.post("/signIn", async (req, res)=>{
             res.status(401).send({status: "error", error: "Contraseña incorrecta"})
             return
         }
-        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: ""}
+        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null} 
         res.status(200).send({status: "success"})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
@@ -45,8 +45,8 @@ router.post("/signIn", async (req, res)=>{
 })
 
 router.get("/signOut", async (req, res)=>{
-    req.session.user= undefined
+    req.session.destroy()
     res.status(200).send({status: "success"})
 })
 
-    export default router
+export default router

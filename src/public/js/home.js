@@ -7,7 +7,7 @@ const chatArea = document.getElementById('messages')
 document.getElementById('sendMsgButton').addEventListener('click', function () {
   var message = document.getElementById('messageArea').value
   if (message === "") return
-  socket.emit('newMessage', { user: myUser, message });
+  socket.emit('newMessage', { user: myUser, message })
 });
 
 socket.on("userLogged", (user) => {
@@ -31,9 +31,7 @@ socket.on("chatStarted", (msgHistory) => {
         <strong>${message.user} dice</strong>: ${message.message}
       </li>
       `
-  });
-
-  console.log(msgLog)
+  })
   chatArea.innerHTML = msgLog
 })
 
@@ -48,15 +46,28 @@ socket.on("message", (data) => {
   `
 })
 
-async function clickHandle(event) {
-  //verify if the click was on a buy product Button
-  if (event.target.classList.contains('buyButton')) {
-    //get the id of the product
-    const productId = event.target.getAttribute('data-product-id')
-    //find the cart id for the user
+async function addToCart(id) {
+  try {
+    const url = 'http://localhost:8080/api/carts/' + id
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quantity: 1 })
+    }
+    await fetch(url, options)
+      .then((response) => {
+        // evaluate the API response
+        if (!response.ok) throw new Error(response.error)
+      })
+  } catch (error) {
+    console.log(error)
+    return false
 
-    const url = 'http://localhost:8080/carts/' + productId
   }
+  return true
+
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -85,6 +96,5 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 })
 
-document.addEventListener('click', clickHandle)
 
 

@@ -13,22 +13,34 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
+    <div class="container" >
+        <div class="row" style="background-color: #dddaca">
             <div class="col-4">
                 <a href="/home"><img src="/imgs/logo.png" alt="Bocha Store"></a>
             </div>
-            <div class="col-4 text-center">
+            <div class="col-4 text-center" >
+
+                <div class="">
+				<b>Hola,</b> 
                 {{#if user}}
-                <span>Bienvenido, {{user.first_name}}</span>
-                <button onclick="signOut()">Logout</button>
+                    <b>{{user.first_name}}</b>
                 {{else}}
-                <button onclick="signUp()">Crear Cuenta</button>
-                <button onclick="signIn()">Ingresar</button>
+                    Inicia tu sesión 
                 {{/if}}
+			    </div>
+                <div>
+                    {{#if user}}
+                        <a href="#" onclick="signOut()" class="sessionButton" >Salir</a>
+                    {{else}}
+				        <a href="#" onclick="signIn()" class="sessionButton">Ingresá</a>  |  
+                        <a href="#"onclick="signUp()" class="sessionButton">Registrate</a>
+
+                    {{/if}}
+			    </div>
+
             </div>
             <div class="col-4 text-right">
-                <button onclick="location.href='/cart'"><img src="/imgs/cart.svg" alt="Mi carrito"></button>
+                <button onclick="goToCart()"><img src="/imgs/cart.svg" alt="Mi carrito"></button>
             </div>
 
 

@@ -22,6 +22,7 @@ async function signIn() {
           // evaluate the API response
           if (!response.ok) { throw new Error("Usuario o Contraseña incorrecta") }
           // Acepted..Redirect to main page
+          user= response.json()
           window.location.href = "/"
         }).catch(error => {
           Swal.showValidationMessage(error.message)

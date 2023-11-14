@@ -1,4 +1,5 @@
 import cartModel from '../../db/models/carts.model.js'
+import mongoose from 'mongoose'
 
 class CartMongoManager {
 
@@ -12,7 +13,8 @@ class CartMongoManager {
     }
 
     async getById(id) {
-        return await this.cartModel.findById(id)
+        return await this.cartModel.findById(id).populate("products.product", ["name", "price"] )
+
     }
 
     async getByEmail(email) {
@@ -21,6 +23,20 @@ class CartMongoManager {
 
     async delete(id) {
         return await this.cartModel.findByIdAndDelete(id)
+    }
+
+    async addProduct(cartId, productId) {
+        const cart = await this.cartModel.findById(cartId);
+        const isInCart = cart.products.findIndex((p) => p.product._id.equals(productId));
+    
+        if (isInCart===-1) {
+            cart.products.push({ product: productId, quantity: 1 })
+        } else {
+            cart.products[isInCart].quantity++
+        }
+    
+        await cart.save()
+        return cart
     }
 }
 

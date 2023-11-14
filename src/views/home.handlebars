@@ -11,7 +11,7 @@
             <div style="display: flex; justify-content: space-between">
                 <div><b>${{price}}</b></div>
                 {{#if ../user}}
-                <button class="btn btn-primary buyButton" data-product-id="{{_id}}" onclick="addToCart({{_id}})">Comprar</button>
+                <button class="btn btn-primary buyButton" onclick="addToCart('{{_id}}')">Comprar</button>
                 {{else}}
                 <button class="btn btn-primary" onclick="signIn()">Inicia Sesión</button>
                 {{/if}}
@@ -75,3 +75,4 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/home.js"></script>
+<script src="/js/chat.js"></script>

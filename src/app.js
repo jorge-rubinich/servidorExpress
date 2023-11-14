@@ -11,6 +11,8 @@ import socketServer from "./sockets/socketServer.js"
 import sysVars from "./config/index.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import "./utils/passport.js"
+import passport from "passport"
 
 const {PORT} = sysVars.app
 const {URI} = sysVars.database
@@ -30,6 +32,8 @@ app.use(session({
     secret: "secret",
     cookie: {maxAge: 60000},
 }))
+
+
 
 
 // Set handlebars

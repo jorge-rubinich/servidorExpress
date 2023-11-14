@@ -5,15 +5,15 @@ async function signIn() {
     Swal.fire({
       title: 'Iniciar sesión',
       html:
-        '<input id="email" class="swal2-input" placeholder="Correo electrónico">' +
-        '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">',
+        '<input id="log-email" class="swal2-input" placeholder="Correo electrónico">' +
+        '<input id="log-password" type="password" class="swal2-input" placeholder="Contraseña">',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       focusConfirm: false,
       preConfirm: async () => {
-        const email = Swal.getPopup().querySelector('#email').value
-        const password = Swal.getPopup().querySelector('#password').value
+        const email = Swal.getPopup().querySelector('#log-email').value
+        const password = Swal.getPopup().querySelector('#log-password').value
         return await fetch('/api/sessions/signIn', {
           method: 'POST',
           body: JSON.stringify({ email, password }),
@@ -22,13 +22,17 @@ async function signIn() {
           // evaluate the API response
           if (!response.ok) { throw new Error("Usuario o Contraseña incorrecta") }
           // Acepted..Redirect to main page
-          user= response.json()
+          return response.json()
+        }).then((data) => {
+          window.user = data.user
           window.location.href = "/"
         }).catch(error => {
           Swal.showValidationMessage(error.message)
         })
       }
     })
+
+
   }
   
   async function signUp() {

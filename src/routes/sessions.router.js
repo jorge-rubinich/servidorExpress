@@ -37,10 +37,10 @@ router.post("/signIn", async (req, res)=>{
             res.status(401).send({status: "error", error: "Contraseña incorrecta"})
             return
         }
-        user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null} 
-        req.session.user= user
+        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null}
         res.status(200).send({status: "success", user: req.session.user})
     } catch (error) {
+        console.log(error)
         res.status(500).send({status: "error", error: error.message})   
     }
 })

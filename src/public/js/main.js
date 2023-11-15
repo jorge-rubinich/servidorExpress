@@ -90,3 +90,19 @@ async function signIn() {
         )
 
     }
+
+    async function goToCart() {
+        response= await fetch('/api/carts/getCartId', {
+            method: 'GET',
+        }) .then((response)=>{
+           if (response.ok) {
+            return response.json()
+          }
+        })
+          .then((data) => {
+            console.log(data)
+            const cartId = data.cartId
+            window.location.href = "/cart/"+cartId
+            })
+            }   
+        

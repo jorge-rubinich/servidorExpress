@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(session({
     store: new MongoStore({mongoUrl: URI}),
     secret: "secret",
-    cookie: {maxAge: 60000},
+    cookie: {maxAge: 600000},
 }))
 
 

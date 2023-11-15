@@ -22,11 +22,16 @@ router.get("/getCartId", async (req, res)=>{
         return
     }
     if (req.session.user.cart) {
+        console.log("ya tiene carrito")
+        console.log(req.session.user.cart)
         res.status(200).send({status: "success", cartId: req.session.user.cart})
         return
     }
+
     try {
+        console.log("no tiene carrito")
         const results = await manager.getByEmail(req.session.user.email)
+        console.log(results)
         if (results){
             req.session.user.cart = results._id 
         } else {
@@ -84,5 +89,41 @@ router.post("/:cid/product/:pid", async (req, res)=>{
     }
 }
 )
+
+
+// Delete a cart by id
+router.delete("/:cid", async (req, res)=>{
+    const {cid} = req.params
+    try {
+        const results = await manager.delete(cid)
+        if (results){
+            res.status(200).send({status: "success", results})   
+        } else {
+            res.status(404).send({status: "error", error: "cart Id "+cid+" not found"})
+        }
+    } catch (error) { 
+        res.status(500).send({status: "error", error: error.message})   
+    }
+})
+
+// delete a product from a cart
+router.delete("/:cid/product/:pid", async (req, res)=>{
+    const {cid, pid} = req.params
+    try {
+        const cart= await manager.getById(cid)
+        if (!cart) {
+            res.status(404).send({status: "error", error: "cart Id "+cid+" not found"})
+            return
+        }
+        const results = await manager.updateProduct(cid, pid, 0)
+        if (results){
+            res.status(200).send({status: "success", results})   
+        } else {
+            res.status(404).send({status: "error", error: "product Id "+pid+" not found"})
+        }
+    } catch (error) { 
+        res.status(500).send({status: "error", error: error.message})   
+    }
+})
 
 export default router

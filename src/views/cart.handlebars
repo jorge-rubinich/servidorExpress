@@ -1,0 +1,37 @@
+{{! Description: Products view }}
+<div class="container">
+    
+
+
+    <h1>Detalles del Carrito</h1>
+    <p>Email: {{email}}</p>
+
+    <div class="row" id="CartProducts">
+
+        {{#each products}}
+            <div class="row border-top border-bottom">
+                <div class="col-md-2">
+                <img src="/{{this.product.thumbnails}}" alt="{{this.product.title}}"  class="img-fluid max-width-100">
+                </div>
+                <div class="col-md-6">
+                    <p>{{this.product.title}}</p>
+                    <p> {{this.quantity}} x $ {{this.product.price}}</p>                 
+                </div>
+                <div class="col-md-2 d-flex align-items-end justify-content-end">
+                    <p class="fw-bold mb-0"> $ {{this.subtotal}}</p>
+                </div>
+                <div class="col-md-2">
+                    <button onclick="removeProduct('{{this.product._id}}')"><img src="/imgs/delete.svg" alt="Eliminar producto"></button>
+            </div>
+        {{/each}}
+
+    </div>
+
+
+
+
+
+</div>
+
+
+{{!-- <script src="/js/cart.js"></script> --}}

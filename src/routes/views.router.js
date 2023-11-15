@@ -3,17 +3,7 @@ import { Router } from "express"
 const router =  Router()
 import manager from "../dao/mongo/productMongoManager.js"
 import chatManager from "../dao/mongo/chatMongoManager.js"
-
-
-/* router.get("/", async (req, res)=>{
-    try {
-        const products = await manager.getPaged(req.query)
-        res.render("home", {products})
-    } catch (error) {
-        res.status(500).send({status: "error", error: error.message})   
-    }
-
-}) */
+import cartManager from "../dao/mongo/cartMongoManager.js"
 
 
 router.get("/", async (req, res)=>{
@@ -37,7 +27,6 @@ router.get("/", async (req, res)=>{
     }
 })
 
-
 function createLink(reqQuery, page) {
     const {limit=6, sort, filter} = reqQuery
     return `/?limit=${limit}&page=${page}`
@@ -52,6 +41,19 @@ router.get("/realTimeProducts", async (req, res)=>{
         res.status(500).send({status: "error", error: error.message})   
     }
 
+})
+
+router.get("/cart/:cid", async (req, res)=>{
+    const {cid} = req.params
+    try {
+        const cart= await cartManager.getById(cid)
+        cart.products.forEach(p => {
+            p.subtotal = p.quantity * p.product.price
+        })
+        res.render("cart", {email: cart.email, products: cart.products, user: req.session.user})
+    } catch (error) {
+        res.status(500).send({status: "error", error: error.message})   
+    }
 })
 
 router.get("/chat", async (req, res)=>{

@@ -17,7 +17,6 @@ async function addToCart(id) {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
         const cartId = data.cartId
         const url = 'http://localhost:8080/api/carts/' + cartId + '/product/' + id
         const options = {
@@ -37,11 +36,5 @@ async function addToCart(id) {
       console.log(error)
       return false
     }
-
-
-  
-
-
-
 
 }

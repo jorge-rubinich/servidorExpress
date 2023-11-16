@@ -23,7 +23,10 @@
                 <div class="">
 				<b>Hola,</b> 
                 {{#if user}}
-                    <b>{{user.first_name}}</b>
+                    <b>{{user.first_name}}</b> 
+                    {{#if user.admin}}
+                        (Admin)
+                    {{/if}}
                 {{else}}
                     Inicia tu sesión 
                 {{/if}}

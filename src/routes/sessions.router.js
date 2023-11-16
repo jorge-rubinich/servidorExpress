@@ -7,10 +7,16 @@ const router = Router()
 router.post("/signUp", async (req, res)=>{
     const {first_name, last_name, email, password} = req.body
     if (!first_name || !last_name || !email || !password){
-        res.status(400).send({status: "error", error: "Debe completar todos los campos"})
+        res.status(400).json({status: "error", error: "Debe completar todos los campos"})
         return
     }
     try {
+        // verify if user already exist
+        const userExist = await userManager.getByEmail(email)
+        if (userExist){
+            res.status(400).json({status: "error", error: "El usuario ya existe"})
+            return
+        }
         const userCreated = await userManager.add(req.body)
         res.status(200).send({status: "success", user: userCreated})
     } catch (error) {
@@ -37,7 +43,8 @@ router.post("/signIn", async (req, res)=>{
             res.status(401).send({status: "error", error: "Contraseña incorrecta"})
             return
         }
-        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null}
+        const admin = email==="adminCoder@coder.com"? true : false
+        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null, admin}
         res.status(200).send({status: "success", user: req.session.user})
     } catch (error) {
         console.log(error)

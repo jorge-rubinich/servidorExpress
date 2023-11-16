@@ -100,9 +100,18 @@ async function signIn() {
           }
         })
           .then((data) => {
-            console.log(data)
-            const cartId = data.cartId
-            window.location.href = "/cart/"+cartId
+            if (!data.cartId) {
+                Swal.fire({
+                    text: `No hay productos aun en el carrito. Pero tenemos muchas ofertas para vos!`,
+                    toast: true,
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    position: "top-right",
+                  })
+            } else {
+              window.location.href = "/cart/"+data.cartId
+            }
             })
             }   
         

@@ -1,26 +1,37 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-import userModel from '../db/models/users.model.js'
-import {hashData} from '../utils.js'
+import { Strategy as GitHubStrategy } from 'passport-github2'
+// import { Strategy as GoogleStrategy } from 'passport-google-oauth20'    
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
+import userManager from '../dao/mongo/userMongoManager.js'
+import {hashData, compareData} from '../utils.js'
+import sysVars from '../config/index.js'
 
-
-passport.use("signup",
+passport.use("register",
  new LocalStrategy(
     {passReqToCallback: true, usernameField: "email"},
     async (req, email, password, done) => {
-//    const {first_name, last_name, email, password} = req.body
+    const {first_name, last_name} = req.body
     if (!first_name || !last_name || !email || !password){
-        done(null, false)
+        return done(null, false, {message: "ingrese todos los datos."})
     }
     try {   
-        const hasedPassword = await hashData(password)
-        const createdUser = await userModel.createOne({
+        const userExist = await userManager.getByEmail(email)
+        if (userExist){
+            return done(null, false, {message: "El usuario ya existe."})
+        }
+        const createdUser = await userManager.add(
+            {
             ...req.body,
-            password: hasedPassword
-        })
-        done(null, createdUser)
+            password: await hashData(password)
+            }
+        )
+        if (!createdUser) {
+            return done(null, false, {message: "El usuario no se pudo crear."})
+        }
+        return done(null, createdUser)
     } catch (error) {
-        done(error)
+        return done(error)
     }
     }
  ))
@@ -30,20 +41,18 @@ passport.use("signup",
         {usernameField: "email"},
         async (email, password, done) => {
         if ( !email || !password){
-            done(null, false)
+            return done(null, false, {message: "ingrese email y contraseña."})
         }
         try {
-            const user = await userModel.getByEmail(email)
+            const user = await userManager.getByEmail(email)
             if (!user) {
-                done(null, false)
+                return done(null, false, {message: "Usuario o contraseña incorrecta++"})
             }
             const isPasswordValid = await compareData(password,user.password)
             if (!isPasswordValid){
-                done(null, false)
+                return done(null, false, {message: "Usuario o contraseña incorrecta**"})
             }
             done(null, user)
-        
-
 
         } catch (error) {
             done(error)
@@ -51,16 +60,43 @@ passport.use("signup",
         }
     ))
 
-function serializeUser(user, done) {
-  done(null, user._id);
-}   
+passport.use("github",
+    new GitHubStrategy(
+        {
+            clientID: process.env.GITHUB_CLIENTID,
+            clientSecret: process.env.GITHUB_CLIENTSECRET,
+            callbackURL: process.env.GITHUB_CALLBACKURL,
+            scope: ["user:email"]  
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log("git Profile:", profile)
+            try {
+                const user = await userManager.getByEmail(profile.emails[0].value)
+                if (user) return done(null, user)
+                const userCreated = await userManager.add({
+                    first_name: profile.displayName,
+                    last_name: profile.displayName,
+                    email: profile.emails[0].value,
+                    password: profile.id
+                })
+                done(null, userCreated)
+            } catch (error) {
+                done(error)
+            }
+        }
+    )
+)
 
-async function deserializeUser(id, done) {   
+passport.serializeUser((user, done) =>{
+  done(null, user._id)
+})
+
+passport.deserializeUser(async (id, done) =>{
     try {
-        user = await userModel.findById(id)
-        done(null, user);
+        const user= await userManager.getById(id)
+        done(null, user)
     } catch (error) {
         done(error, null)
-    } 
+    }
 
-  }
+  })

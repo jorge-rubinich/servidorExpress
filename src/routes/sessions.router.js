@@ -1,60 +1,58 @@
 import exp from "constants"
 import {Router} from "express"
 import userManager from "../dao/mongo/userMongoManager.js"
+import passport from "passport"
+import {hashData, compareData} from "../utils.js"
 
 const router = Router()
 
-router.post("/signUp", async (req, res)=>{
-    const {first_name, last_name, email, password} = req.body
-    if (!first_name || !last_name || !email || !password){
-        res.status(400).json({status: "error", error: "Debe completar todos los campos"})
-        return
+router.post("/register",
+    passport.authenticate("register", 
+        {failureRedirect: "/api/sessions/failRegister"}),
+    async (req, res)=>{
+        res.status(200).send({status: "success", user: req.session.user}) 
     }
-    try {
-        // verify if user already exist
-        const userExist = await userManager.getByEmail(email)
-        if (userExist){
-            res.status(400).json({status: "error", error: "El usuario ya existe"})
-            return
-        }
-        const userCreated = await userManager.add(req.body)
-        res.status(200).send({status: "success", user: userCreated})
-    } catch (error) {
-        res.status(500).send({status: "error", error: error.message})   
-    }
-    userManager.add(req.body)
-}
 )
 
-router.post("/signIn", async (req, res)=>{
-    const {email, password} = req.body  
-    if ( !email || !password){
-        res.status(400).send({status: "error", error: "ingrese email y contraseña"})
-        return
+router.get("/failRegister", (req, res)=>{
+    res.status(401).send({status: "error", error: "Algo ha salido mal al registrarse"})
     }
-    try {
-        const user = await userManager.getByEmail(email)
-        if (!user) {
-            res.status(404).send({status: "error", error: "Usuario no encontrado"})
-            return
+)
+//,
+
+router.post("/login", 
+    passport.authenticate("login",
+    {failureRedirect: "/api/sessions/failLogin"}),
+        (req, res)=>{
+            if (req.user) {
+                req.session.user= req.user
+                res.status(200).send({status: "success", user: req.session.user})
+            }
         }
-        const isPasswordValid = password === user.password
-        if (!isPasswordValid){
-            res.status(401).send({status: "error", error: "Contraseña incorrecta"})
-            return
-        }
-        const admin = email==="adminCoder@coder.com"? true : false
-        req.session.user= {email: user.email, first_name: user.first_name, last_name: user.last_name, cart: null, admin}
-        res.status(200).send({status: "success", user: req.session.user})
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({status: "error", error: error.message})   
+)
+
+router.get("/failLogin", (req, res)=>{
+    res.status(401).send({status: "error", error: "Usuario o contraseña incorrecta"})
     }
-})
+)
 
 router.get("/signOut", async (req, res)=>{
     req.session.destroy()
     res.status(200).send({status: "success"})
 })
+
+router.get("/github",
+    passport.authenticate("github", {scope: ["user:email"]}),
+    async (req, res)=>{}
+)
+
+router.get("/githubcallback",
+    passport.authenticate("github", {failureRedirect: "/login", session: false}),
+    async (req, res)=>{
+        const {email, first_name, last_name} = req.user
+        const admin = email==="adminCoder@coder.com"? true : false
+        req.session.user= {email, first_name, last_name, cart: null, admin}
+        res.status(200).send({status: "success", user: req.session.user})
+    }  ) 
 
 export default router

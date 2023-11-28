@@ -70,3 +70,4 @@ async function removeProduct(id) {
         })
         location.reload(true)
     }
+

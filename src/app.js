@@ -30,10 +30,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(session({
     store: new MongoStore({mongoUrl: URI}),
     secret: "secret",
+    resave: false,
+    saveUninitialized: false,
     cookie: {maxAge: 600000},
 }))
 
-
+// Set passport
+app.use(passport.initialize())  
+app.use(passport.session())
 
 
 // Set handlebars

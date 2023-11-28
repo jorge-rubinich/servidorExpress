@@ -4,11 +4,14 @@ const router =  Router()
 import manager from "../dao/mongo/productMongoManager.js"
 import chatManager from "../dao/mongo/chatMongoManager.js"
 import cartManager from "../dao/mongo/cartMongoManager.js"
-
+import { moneyFormat } from "../utils.js"
 
 router.get("/", async (req, res)=>{
     try {
         const results = await manager.getPaged(req.query)
+        results.docs.forEach(p => {
+            p.Price = moneyFormat(p.price)
+        })
         const retObj = {status: "success",
         payload: results.docs, 
         totalPages: results.totalPages, 
@@ -21,6 +24,7 @@ router.get("/", async (req, res)=>{
         nextLink: results.hasNextPage? createLink(req.query, results.nextPage) : null,
         user : req.session.user
         }
+
         res.render("home",retObj)   
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
@@ -48,7 +52,9 @@ router.get("/cart/:cid", async (req, res)=>{
     try {
         const cart= await cartManager.getById(cid)
         cart.products.forEach(p => {
+            p.product.stPrice = moneyFormat(p.product.price)
             p.subtotal = p.quantity * p.product.price
+            p.stSubtotal = moneyFormat(p.subtotal)
         })
         res.render("cart", {email: cart.email, products: cart.products, user: req.session.user})
     } catch (error) {

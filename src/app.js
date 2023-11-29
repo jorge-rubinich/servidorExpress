@@ -11,6 +11,7 @@ import socketServer from "./sockets/socketServer.js"
 import sysVars from "./config/index.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import flash from "express-flash"
 import "./utils/passport.js"
 import passport from "passport"
 
@@ -26,6 +27,12 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(__dirname + '/public'));
 
+
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send("Error");
+   });
+
 // Set session
 app.use(session({
     store: new MongoStore({mongoUrl: URI}),
@@ -38,6 +45,7 @@ app.use(session({
 // Set passport
 app.use(passport.initialize())  
 app.use(passport.session())
+app.use(flash())
 
 
 // Set handlebars
@@ -46,6 +54,9 @@ app.set("views", __dirname + "/views/")
 app.set("view engine", "handlebars")
 
 // routes
+
+
+ 
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)

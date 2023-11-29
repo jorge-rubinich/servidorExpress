@@ -20,19 +20,19 @@ router.get("/failRegister", (req, res)=>{
 )
 //,
 
-router.post("/login", 
+router.get("/login", 
     passport.authenticate("login",
-    {failureRedirect: "/api/sessions/failLogin"}),
-        (req, res)=>{
-            if (req.user) {
-                req.session.user= req.user
-                res.status(200).send({status: "success", user: req.session.user})
-            }
-        }
+        {successRedirect: "/", 
+        failureRedirect: "/api/sessions/failLogin",       
+        failureFlash: true})
 )
 
-router.get("/failLogin", (req, res)=>{
-    res.status(401).send({status: "error", error: "Usuario o contraseña incorrecta"})
+
+router.get("/failLogin", 
+    (req, res)=> {
+        const message = req.flash("error")
+        res.status(401)
+        .json({status: "error", error: message})
     }
 )
 
@@ -42,17 +42,23 @@ router.get("/signOut", async (req, res)=>{
 })
 
 router.get("/github",
-    passport.authenticate("github", {scope: ["user:email"]}),
+    passport.authenticate("github", {failureRedirect: "/api/sessions/failGithub"}),
     async (req, res)=>{}
 )
 
 router.get("/githubcallback",
-    passport.authenticate("github", {failureRedirect: "/login", session: false}),
+    passport.authenticate("github", {failureRedirect: "/api/sessions/failGithub"}),
     async (req, res)=>{
         const {email, first_name, last_name} = req.user
         const admin = email==="adminCoder@coder.com"? true : false
         req.session.user= {email, first_name, last_name, cart: null, admin}
-        res.status(200).send({status: "success", user: req.session.user})
+        res.status(200).redirect('/');
     }  ) 
 
+router.get("/failGithub", (req, res)=>{
+    res.status(401).send({status: "error", error: "Algo ha salido mal al registrarse"})
+    }
+)
+
+    
 export default router

@@ -1,5 +1,7 @@
 // main.js 
 
+//import { response } from "express"
+
 async function signIn() {
     event.preventDefault()
     Swal.fire({
@@ -15,23 +17,17 @@ async function signIn() {
       preConfirm: async () => {
         const email = Swal.getPopup().querySelector('#log-email').value
         const password = Swal.getPopup().querySelector('#log-password').value
-        return await fetch('/api/sessions/login', {
-          method: 'POST',
+        const response=   await fetch('/api/sessions/login', {
+          method: 'GET',
           body: JSON.stringify({ email, password }),
           headers: { 'content-type': 'application/json' }
-        }).then((response) => {
-          // evaluate the API response
-          if (!response.ok) { 
-          return response.json()
-          .then((response)=>{
-            throw new Error(response.error)})
-          }
-        }).then((data) => {
-          window.location.href = "/"
-        }).catch(error => {
-          console.log(error)
-          Swal.showValidationMessage(error.message)
         })
+        if (!response.ok){
+          const responseError= await response.json()
+          Swal.showValidationMessage(responseError)
+
+        }
+        
       }
     })
 

@@ -38,7 +38,8 @@ passport.use("register",
  
  passport.use("login",
     new LocalStrategy(
-        {usernameField: "email"},
+        {usernameField: "email",
+        failureflash: true},
         async (email, password, done) => {
         if ( !email || !password){
             return done(null, false, {message: "ingrese email y contraseña."})
@@ -66,10 +67,9 @@ passport.use("github",
             clientID: process.env.GITHUB_CLIENTID,
             clientSecret: process.env.GITHUB_CLIENTSECRET,
             callbackURL: process.env.GITHUB_CALLBACKURL,
-            scope: ["user:email"]  
+        //    scope: ["user:email"]  
         },
         async (accessToken, refreshToken, profile, done) => {
-            console.log("git Profile:", profile)
             try {
                 const user = await userManager.getByEmail(profile.emails[0].value)
                 if (user) return done(null, user)

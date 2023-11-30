@@ -9,8 +9,6 @@ const hashData = async (data) => {
 }
 
 const compareData = async (data, hashedData) => {
-  console.log("data", data)
-  console.log("hashedData", hashedData)
   return await bcrypt.compare(data, hashedData);
 }
 

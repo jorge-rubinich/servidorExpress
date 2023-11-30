@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
         email: {type: String, required: true, maxlength: 100, unique: true},
         password: {type: String, required: true, maxlength: 100},
         role: {type: String, default: "user", maxlength: 15},
-        timestamp: {type: Date, default: Date.now()}
+        timestamp: {type: Date, default: Date.now()},
+        Age: {type: Number, required: true, maxlength: 3}
 
 })
 

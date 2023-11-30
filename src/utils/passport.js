@@ -9,9 +9,11 @@ import sysVars from '../config/index.js'
 
 passport.use("register",
  new LocalStrategy(
-    {passReqToCallback: true, usernameField: "email"},
+    {passReqToCallback: true,
+    usernameField: "email",
+    failureflash: true},
     async (req, email, password, done) => {
-    const {first_name, last_name} = req.body
+    const {first_name, last_name, edad} = req.body
     if (!first_name || !last_name || !email || !password){
         return done(null, false, {message: "ingrese todos los datos."})
     }
@@ -38,8 +40,7 @@ passport.use("register",
  
  passport.use("login",
     new LocalStrategy(
-        {usernameField: "email",
-        failureflash: true},
+        {usernameField: "email"},
         async (email, password, done) => {
         if ( !email || !password){
             return done(null, false, {message: "ingrese email y contraseña."})
@@ -47,11 +48,11 @@ passport.use("register",
         try {
             const user = await userManager.getByEmail(email)
             if (!user) {
-                return done(null, false, {message: "Usuario o contraseña incorrecta++"})
+                return done(null, false, {message: "Usuario o contraseña incorrecta"})
             }
             const isPasswordValid = await compareData(password,user.password)
             if (!isPasswordValid){
-                return done(null, false, {message: "Usuario o contraseña incorrecta**"})
+                return done(null, false, {message: "Usuario o contraseña incorrecta"})
             }
             done(null, user)
 

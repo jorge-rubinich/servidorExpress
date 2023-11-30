@@ -33,6 +33,7 @@
 			    </div>
                 <div>
                     {{#if user}}
+                        <a href="/api/sessions/current" onclick="profile()" class="sessionButton" >Mi perfil</a>  |  
                         <a href="#" onclick="signOut()" class="sessionButton" >Salir</a>
                     {{else}}
 				        <a href="#" onclick="signIn()" class="sessionButton">Ingresá</a>  |  

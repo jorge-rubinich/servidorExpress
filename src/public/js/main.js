@@ -1,4 +1,4 @@
-// main.js 
+// main.j 
 
 //import { response } from "express"
 
@@ -11,27 +11,26 @@ async function signIn() {
         '<input id="log-password" type="password" class="swal2-input" placeholder="Contraseña">'+
         '<hr><a href="/api/sessions/github" class="btn btn-secondary btn-block"><i class="fab fa-github"></i> Iniciar sesión con Github</a>',
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: 'conectar',
       cancelButtonText: 'Cancelar',
       focusConfirm: false,
       preConfirm: async () => {
         const email = Swal.getPopup().querySelector('#log-email').value
         const password = Swal.getPopup().querySelector('#log-password').value
         const response=   await fetch('/api/sessions/login', {
-          method: 'GET',
+          method: 'POST',
           body: JSON.stringify({ email, password }),
           headers: { 'content-type': 'application/json' }
         })
+        
         if (!response.ok){
           const responseError= await response.json()
-          Swal.showValidationMessage(responseError)
-
-        }
-        
+          console.log(responseError.error)
+          Swal.showValidationMessage(responseError.error)
+        } 
       }
     })
-
-
+    href="/"
   }
   
   async function signUp() {
@@ -42,7 +41,8 @@ async function signIn() {
         '<input id="first_name" class="swal2-input" placeholder="Nombre">' +
         '<input id="last_name" class="swal2-input" placeholder="Apellido">'+
         '<input id="email" class="swal2-input" placeholder="Correo electrónico">' +
-        '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">',
+        '<input id="password" type="password" class="swal2-input" placeholder="Contraseña">'+
+        '<inpt id="age" class="swal2-input" placeholder="Edad">',
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
@@ -52,10 +52,11 @@ async function signIn() {
         const last_name = Swal.getPopup().querySelector('#last_name').value
         const email = Swal.getPopup().querySelector('#email').value
         const password = Swal.getPopup().querySelector('#password').value
+        const age = Swal.getPopup().querySelector('#age').value
   
-        return await fetch('/api/sessions/registera', {
+        return await fetch('/api/sessions/register', {
           method: 'POST',
-          body: JSON.stringify({first_name, last_name, email, password}),
+          body: JSON.stringify({first_name, last_name, email, password, edad}),
           headers: {'content-type': 'application/json'}
         }) .then((response)=>{
           console.log(response)
@@ -74,7 +75,7 @@ async function signIn() {
               position: "top-right",
             })
         }).catch(error =>{
-          Swal.showValidationMessage(error.message)
+          Swal.showValidationMessage(error.message+" "+error.linenumber)
         })
       }})
     }
@@ -115,4 +116,7 @@ async function signIn() {
             }
             })
             }   
+
+
+
         

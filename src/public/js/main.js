@@ -4,7 +4,7 @@
 
 async function signIn() {
     event.preventDefault()
-    Swal.fire({
+    await Swal.fire({
       title: 'Iniciar sesión',
       html:
         '<input id="log-email" class="swal2-input" placeholder="Correo electrónico">' +
@@ -30,7 +30,7 @@ async function signIn() {
         } 
       }
     })
-    href="/"
+    window.location.href = "/"
   }
   
   async function signUp() {

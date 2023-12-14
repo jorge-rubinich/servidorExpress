@@ -30,6 +30,14 @@ async function addToCart(id) {
           .then((response) => {
             // evaluate the API response
             if (!response.ok) throw new Error(response.error)
+              Swal.fire({
+              text: `El pruducto ha sido agregado al carrito!`,
+              toast: true,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 3000,
+              position: "top-right",
+          })
           })
       })
     } catch (error) {

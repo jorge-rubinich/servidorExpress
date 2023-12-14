@@ -64,7 +64,9 @@ app.use("/api/sessions", sessionRouter)
 app.use("/api/users", usersRouter)
 
 const httpServer = app.listen(PORT, ()=>{
-    console.log("Escuchando en Puerto "+PORT)})
+    console.log("Escuchando en Puerto "+PORT)
+    console.log("para el tutor:  Migrando a patron Repository. NO CORREGIR")
+})
 
 
 socketServer.createSocketServer(httpServer)

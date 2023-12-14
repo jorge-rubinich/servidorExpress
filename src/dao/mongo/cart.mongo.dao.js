@@ -1,34 +1,34 @@
 import cartModel from '../../db/models/carts.model.js'
-import mongoose from 'mongoose'
+import baseMongoDao from './base.mongo.dao.js'
 
-class CartMongoManager {
+class CartMongoDao extends baseMongoDao {
 
-    constructor() {
-        this.cartModel = cartModel
+    constructor(model) {
+        super(model)
     }
 
     async add(data) {
         console.log(data)
-        return await this.cartModel.create(data)
+        return await this.model.create(data)
     }
 
     async getById(id) {
-        return await this.cartModel.findById(id)
+        return await this.model.findById(id)
             .lean()
             .populate("products.product", ["thumbnails", "title", "price"])
 
     }
 
     async getByEmail(email) {
-        return await this.cartModel.findOne({email: email})
+        return await this.model.findOne({email: email})
     }
 
     async delete(id) {
-        return await this.cartModel.findByIdAndDelete(id)
+        return await this.model.findByIdAndDelete(id)
     }
 
     async addProduct(cartId, productId) {
-        const cart = await this.cartModel.findById(cartId);
+        const cart = await this.model.findById(cartId);
         const isInCart = cart.products.findIndex((p) => p.product._id.equals(productId));
     
         if (isInCart===-1) {
@@ -42,7 +42,7 @@ class CartMongoManager {
     }
 
     async updateProduct(cartId, productId, quantity) {
-        const cart = await this.cartModel.findById(cartId);
+        const cart = await this.model.findById(cartId);
         const isInCart = cart.products.findIndex((p) => p.product._id.equals(productId));
     
         if (isInCart===-1) {

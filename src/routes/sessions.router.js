@@ -1,4 +1,4 @@
-import exp from "constants"
+//import exp from "constants"
 import { Router } from "express"
 import userManager from "../dao/mongo/userMongoManager.js"
 import passport from "passport"
@@ -30,16 +30,14 @@ router.get("/failRegister", (req, res) => {
 }
 )
 
-// Login with mail and password
 router.post("/login",
     passport.authenticate("login",
-        {//successRedirect: "/api/sessions/successLogin", 
-            failureRedirect: "/api/sessions/failLogin",
-            failureFlash: true
-        }),
+    {
+        failureRedirect: "/api/sessions/failLogin",
+        failureFlash: true
+    }),
     (req, res) => {
-        req.session.user = req.user
-        res.status(200).redirect('/');
+        res.status(200).send({ status: "success", user: req.session.user })      
     }
 )
 

@@ -1,12 +1,13 @@
-import manager from "../dao/mongo/productMongoManager.js"
-import chatManager from "../dao/mongo/chatMongoManager.js"
-import cartManager from "../dao/mongo/cartMongoManager.js"
+import productService from "../services/product.service.js"
+import cartService from "../services/cart.service.js"
+
+//import chatManager from "../dao/mongo/chatMongoManager.js"
 import { moneyFormat } from "../utils.js"
 
 // retrieve all products for the home page
 const getAll = async (req, res)=>{
     try {
-        const results = await manager.getPaged(req.query)
+        const results = await productService.getPaged(req.query)
         results.docs.forEach(p => {
             p.Price = moneyFormat(p.price)
         })
@@ -36,7 +37,7 @@ function createLink(reqQuery, page) {
 // retrieve all products for the real time page
 const getRealTimeProducts = async (req, res)=>{
     try {
-        const products = await manager.getAll(req.query)
+        const products = await productService.getAll(req.query)
         const info={"count": products.length}
         res.render("realTimeProducts", {info , products})
     } catch (error) {
@@ -48,7 +49,7 @@ const getRealTimeProducts = async (req, res)=>{
 const cartView = async (req, res)=>{
     const {cid} = req.params
     try {
-        const cart= await cartManager.getById(cid)
+        const cart= await cartService.getById(cid)
         cart.products.forEach(p => {
             p.product.stPrice = moneyFormat(p.product.price)
             p.subtotal = p.quantity * p.product.price
@@ -61,7 +62,7 @@ const cartView = async (req, res)=>{
 }
 
 // retrieve the data and render the chat view
-const chatView = async (req, res)=>{
+/* const chatView = async (req, res)=>{
     try {
         const messages = await chatManager.getAll(req.query)
         res.render("chat", {messages})
@@ -69,6 +70,7 @@ const chatView = async (req, res)=>{
         res.status(500).send({status: "error", error: error.message})   
     }
 
-}
+} */
 
-export {getAll, getRealTimeProducts, cartView, chatView}
+export {getAll, getRealTimeProducts, cartView, //chatView
+}

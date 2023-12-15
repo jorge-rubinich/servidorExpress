@@ -1,5 +1,5 @@
 
-class baseMongoDao {
+class BaseRpository {
 
     constructor(model) {
         this.model = model
@@ -9,7 +9,7 @@ class baseMongoDao {
         return await this.model.find().lean()
     }
 
-    async get(id) {
+    async getById(id) {
         return await this.model.findById(id)
     }
 
@@ -28,4 +28,4 @@ class baseMongoDao {
 
 }
 
-export default baseMongoDao
+export default BaseRpository

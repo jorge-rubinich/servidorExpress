@@ -1,9 +1,9 @@
-import manager from "../dao/mongo/productMongoManager.js"
+import productService from "../services/product.service.js"
 import { validationResult } from "express-validator"
 
-const getAll = async (req, res)=>{
+const getAllProducts  = async (req, res)=>{
     try {
-        const results = await manager.getAll()
+        const results = await productService.getAllProducts()
         const info={"count": results.length}
         res.status(200).send({status: "success", results})
     } catch (error) {
@@ -12,10 +12,10 @@ const getAll = async (req, res)=>{
 
 }
 
-const getById = async (req, res)=>{
+const getProductById = async (req, res)=>{
     const {pid} = req.params
     try {
-        const results = await manager.getById(pid)
+        const results = await productService.getProductById(pid)
         if (results) {
             res.status(200).send({status: "success", results})   
         }  else {
@@ -31,7 +31,7 @@ const addProduct = async (req, res)=>{
     if ( !errors.isEmpty()) return res.status(400).send({status: "error", error: errors.errors })
     try {
         const newProduct= req.body
-        const result = await manager.add(newProduct)
+        const result = await productService.addProduct(newProduct)
         if (result.status=="success") {
             res.status(200).send(result)   
         } else {
@@ -52,7 +52,7 @@ const updateProduct = async (req, res)=>{
         const {pid} = req.params
         const updatesObj= req.body
         console.log(updatesObj)
-        const result = await manager.update(pid, updatesObj)
+        const result = await productService.updateProduct(pid, updatesObj)
         console.log(result)
         if (result) {
             res.status(200).send({status: "success", message: "Product updated"})   
@@ -68,7 +68,7 @@ const updateProduct = async (req, res)=>{
 const deleteProduct = async (req, res)=>{
     try {
         const {pid} = req.params
-        const result = await manager.delete(pid)
+        const result = await productService.deleteProduct(pid)
         if (result) {
             res.status(200).send({status: "success"})
         } else {
@@ -81,4 +81,4 @@ const deleteProduct = async (req, res)=>{
     
 }
 
-export {getAll, getById, addProduct, updateProduct, deleteProduct}
+export {getAllProducts, getProductById, addProduct, updateProduct, deleteProduct}

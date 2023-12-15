@@ -1,11 +1,11 @@
 import {Router} from "express"
-import * as userController from "../controllers/userController.js"
+import * as userController from "../controllers/user.controller.js"
 
 
 const router = Router()
 
-router.get("/", userController.getAll )   // Retrieve all users
-router.get("/:uid", userController.getById)  // retrieve a user by id
+router.get("/", userController.getAllUsers )   // Retrieve all users
+router.get("/:uid", userController.getUserById)  // retrieve a user by id
 router.post("/", userController.addUser )   // Create a new user    
 router.delete("/:uid", userController.deleteUser)  // Delete a user by id
 

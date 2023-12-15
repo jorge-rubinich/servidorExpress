@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 const router = Router()
-import * as viewController from "../controllers/viewController.js"
+import * as viewController from "../controllers/view.controller.js"
 
 router.get("/", viewController.getAll )   // Retrieve all products
 router.get("/realTimeProducts", viewController.getRealTimeProducts )  

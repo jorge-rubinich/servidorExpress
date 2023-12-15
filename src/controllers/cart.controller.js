@@ -1,5 +1,4 @@
-import manager from "../dao/mongo/cartMongoManager.js"
-import prodManager from "../dao/mongo/productMongoManager.js"
+import productService from "../services/product.service.js"
 
 const addCart =  async (req, res)=>{
         try {
@@ -99,21 +98,7 @@ const deleteCart = async (req, res)=>{
 
 const deleteProductFromCart = async (req, res)=>{
     const {cid, pid} = req.params
-    try {
-        const cart= await manager.getById(cid)
-        if (!cart) {
-            res.status(404).send({status: "error", error: "cart Id "+cid+" not found"})
-            return
-        }
-        const results = await manager.updateProduct(cid, pid, 0)
-        if (results){
-            res.status(200).send({status: "success", results})   
-        } else {
-            res.status(404).send({status: "error", error: "product Id "+pid+" not found"})
-        }
-    } catch (error) { 
-        res.status(500).send({status: "error", error: error.message})   
-    }
+    cartService.deleteProductFromCart(cid,pid)
 }
 
 export {addCart, getCartId, getCartById, addProductToCart, deleteCart, deleteProductFromCart}

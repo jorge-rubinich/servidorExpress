@@ -1,4 +1,4 @@
-import manager from "../dao/mongo/chatMongoManager.js"
+import manager from "../repositories/chat.repository.js"
 
 function chatManager(io, socket) {
   

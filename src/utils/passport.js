@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GitHubStrategy } from 'passport-github2'
 // import { Strategy as GoogleStrategy } from 'passport-google-oauth20'    
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
-import userManager from '../dao/mongo/userMongoManager.js'
+import userService from '../services/user.service.js'
 import {hashData, compareData} from '../utils.js'
 import sysVars from '../config/index.js'
 
@@ -18,11 +18,11 @@ passport.use("register",
         return done(null, false, {message: "ingrese todos los datos."})
     }
     try {   
-        const userExist = await userManager.getByEmail(email)
+        const userExist = await userService.getByEmail(email)
         if (userExist){
             return done(null, false, {message: "El usuario ya existe."})
         }
-        const createdUser = await userManager.add(
+        const createdUser = await userService.add(
             {
             ...req.body,
             password: await hashData(password)
@@ -46,7 +46,7 @@ passport.use("register",
             return done(null, false, {message: "ingrese email y contraseña."})
         }
         try {
-            const user = await userManager.getByEmail(email)
+            const user = await userService.getByEmail(email)
             if (!user) {
                 return done(null, false, {message: "Usuario o contraseña incorrecta"})
             }
@@ -72,9 +72,9 @@ passport.use("github",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                const user = await userManager.getByEmail(profile.emails[0].value)
+                const user = await userService.getByEmail(profile.emails[0].value)
                 if (user) return done(null, user)
-                const userCreated = await userManager.add({
+                const userCreated = await userService.add({
                     first_name: profile.displayName,
                     last_name: profile.displayName,
                     email: profile.emails[0].value,
@@ -94,7 +94,7 @@ passport.serializeUser((user, done) =>{
 
 passport.deserializeUser(async (id, done) =>{
     try {
-        const user= await userManager.getById(id)
+        const user= await userService.getById(id)
         done(null, user)
     } catch (error) {
         done(error, null)

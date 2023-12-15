@@ -1,86 +1,31 @@
-//import exp from "constants"
 import { Router } from "express"
-import userManager from "../dao/mongo/userMongoManager.js"
+import * as sessionController from "../controllers/session.controller.js"
 import passport from "passport"
 import { hashData, compareData } from "../utils.js"
 
 const router = Router()
 
-router.get("/current", (req, res) => {
-   res.render("current", { user: req.session.user })
-}	
-)
+const registerOptions= {failureRedirect: "/api/sessions/failRegister", failureFlash: true}
+const loginOptions= {failureRedirect: "/api/sessions/failLogin", failureFlash: true}
 
-
-router.post("/register",
-    passport.authenticate("register",
-        {
-            failureRedirect: "/api/sessions/failRegister",
-            failureFlash: true
-        }),
-    async (req, res) => {
-        res.status(200).send({ status: "success", user: req.session.user })
-    }
-)
-
-router.get("/failRegister", (req, res) => {
-    const message = req.flash("error")
-    res.status(401)
-        .json({ status: "error", error: message })
-}
-)
-
-router.post("/login",
-    passport.authenticate("login",
-    {
-        failureRedirect: "/api/sessions/failLogin",
-        failureFlash: true
-    }),
-    (req, res) => {
-        res.status(200).send({ status: "success", user: req.session.user })      
-    }
-)
-
-router.get("/successLogin",
-    (req, res) => {
-        req.session.user = req.user
-        res.status(200).redirect('/');
-    }
-)
-
-router.get("/failLogin",
-    (req, res) => {
-
-        const message = req.flash("error")[0]
-        res.status(401)
-            .json({ status: "error", error: message })
-    }
-)
-
-
-router.get("/signOut", async (req, res) => {
-    req.session.destroy()
-    res.status(200).send({ status: "success" })
-})
-
-
-// Login with githubS
+router.get("/current", 	sessionController.getCurrent)
+router.post("/register", passport.authenticate("register", registerOptions),
+                         sessionController.register)
+router.get("/failRegister", sessionController.failRegister)
+router.post("/login", passport.authenticate("login", loginOptions),
+                        sessionController.login)
+router.get("/successLogin", sessionController.successLogin)
+router.get("/failLogin",sessionController.failLogin)
+router.get("/signOut", sessionController.signOut)
 router.get("/github",
     passport.authenticate("github", { failureRedirect: "/api/sessions/failGithub" }),
     async (req, res) => { }
 )
-
 router.get("/githubcallback",
     passport.authenticate("github", { failureRedirect: "/api/sessions/failGithub" }),
-    async (req, res) => {
-        req.session.user = req.user
-        res.status(200).redirect('/');
-    })
-
-router.get("/failGithub", (req, res) => {
-    res.status(401).send({ status: "error", error: "Algo ha salido mal al registrarse" })
-}
+    sessionController.githubcallback
 )
+router.get("/failGithub", sessionController.failGithub)
 
 
 export default router

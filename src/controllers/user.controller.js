@@ -1,6 +1,6 @@
-import userService from "../services/users.service.js"
+import userService from "../services/user.service.js"
 
-const getAll =async (req, res)=>{
+const getAllUsers =async (req, res)=>{
     try {
         const results = await manager.getAll()
         res.status(200).send({status: "success", results})
@@ -9,7 +9,7 @@ const getAll =async (req, res)=>{
     }
 }
 
-const getById = async (req, res)=>{
+const getUserById = async (req, res)=>{
     const {pid} = req.params
     try {
         const results = await manager.getById(pid)
@@ -54,4 +54,4 @@ const deleteUser = async (req, res)=>{
 }
 
 
-export {getAll, getById, addUser, deleteUser}
+export default {getAllUsers, getUSerById, addUser, deleteUser}

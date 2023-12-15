@@ -1,4 +1,4 @@
-import chatModel from "../../db/models/chat.model.js"
+import chatModel from "../db/models/chat.model.js"
 
 class chatMongoManager {
     constructor() {

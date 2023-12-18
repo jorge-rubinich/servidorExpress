@@ -42,6 +42,7 @@ async function removeProduct(id) {
             return response.json()
           })
           .then((data) => {
+            console.log("tengo carrito "+data.cartId)
             const cartId = data.cartId
             const url = 'http://localhost:8080/api/carts/' + cartId + '/product/' + id
             const options = {
@@ -53,6 +54,7 @@ async function removeProduct(id) {
             fetch(url, options)
               .then((response) => {
                 // evaluate the API response
+                console.log(Response.status)
                 if (!response.status===200) throw new Error(response.error)
               })
           })

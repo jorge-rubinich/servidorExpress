@@ -54,4 +54,4 @@ const deleteUser = async (req, res)=>{
 }
 
 
-export default {getAllUsers, getUSerById, addUser, deleteUser}
+export  {getAllUsers, getUserById, addUser, deleteUser}

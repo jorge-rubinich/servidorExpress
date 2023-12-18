@@ -1,7 +1,7 @@
-import BaseRpository from './base.repository.js'
+import BaseRepository from './base.repository.js'
 import productModel from "../db/models/products.model.js"
 
-class ProductRepository extends BaseRpository {
+class ProductRepository extends BaseRepository {
     constructor(model) {
         super(model)
     }

@@ -8,7 +8,7 @@ class productService extends BaseService {
     }
 
     async getPaged(obj) {
-        return await this.dao.getPaged(obj)
+        return await this.repository.getPaged(obj)
     }
 }
 

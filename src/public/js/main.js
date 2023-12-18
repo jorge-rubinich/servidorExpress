@@ -102,6 +102,7 @@ async function signIn() {
           }
         })
           .then((data) => {
+            console.log(data)
             if (!data.cartId) {
                 Swal.fire({
                     text: `No hay productos aun en el carrito. Pero tenemos muchas ofertas para vos!`,

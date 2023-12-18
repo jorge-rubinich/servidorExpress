@@ -50,12 +50,17 @@ const cartView = async (req, res)=>{
     const {cid} = req.params
     try {
         const cart= await cartService.getById(cid)
-        cart.products.forEach(p => {
-            p.product.stPrice = moneyFormat(p.product.price)
-            p.subtotal = p.quantity * p.product.price
-            p.stSubtotal = moneyFormat(p.subtotal)
+        const products = cart.products.map(function(item) {
+
+            return {id: item.product._id,
+                title: item.product.title,
+                description: item.product.description,
+                thumbnails: item.product.thumbnails,
+                quantity: item.quantity,
+                stPrice: moneyFormat(item.product.price),
+                stSubtotal: moneyFormat(item.quantity * item.product.price)}
         })
-        res.render("cart", {email: cart.email, products: cart.products, user: req.session.user})
+        res.render("cart", {email: cart.email, products, user: req.session.user})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
     }

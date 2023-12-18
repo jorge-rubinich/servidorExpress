@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
         role: {type: String, default: "user", maxlength: 15},
         timestamp: {type: Date, default: Date.now()},
         Age: {type: Number, required: true, maxlength: 3}
-
-})
+}
+)
 
 const userModel = mongoose.model("users", userSchema)  
 

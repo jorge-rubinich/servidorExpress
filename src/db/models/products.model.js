@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema({
     timestamp: {type: Date, default: Date.now()}
 })
 productSchema.plugin(mongoosePaginate)
+
 const productModel = mongoose.model("products", productSchema)  
 
 export default productModel

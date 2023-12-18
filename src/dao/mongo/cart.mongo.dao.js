@@ -1,18 +1,22 @@
-import cartModel from '../db/models/carts.model.js'
-import BaseRepository from './base.repository.js'
+import cartModel from '../../db/models/carts.model.js'
+import BaseMongoDao from './base.mongo.dao.js'
 
-class CartRepository extends BaseRepository {
+class CartMongoDao extends BaseMongoDao {
 
-    constructor(model) {
-        super(model)
+    constructor(cartModel) {
+        super(cartModel)
     }
 
-     // override the base getById() method to add .lean()
-/*     async getById(id) {
-        return await this.model.findById(id)
-    } */
+    async add(data) {
+        console.log(data)
+        return await this.model.create(data)
+    }
+
     async getById(id) {
-        return await this.model.findById(id).populate('products.product')
+        return await this.model.findById(id)
+            .lean()
+            .populate("products.product", ["thumbnails", "title", "price"])
+
     }
 
     async getByEmail(email) {
@@ -50,8 +54,7 @@ class CartRepository extends BaseRepository {
         await cart.save()
         return cart
     }
-
 }
 
 
-export default new CartRepository(cartModel)
+export default new CartMongoDao()

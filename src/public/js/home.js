@@ -13,10 +13,12 @@ async function addToCart(id) {
     await fetch(url, options)
       .then((response) => {
         // evaluate the API response
+        console.log(Response.ok)
         if (!response.ok) throw new Error(response.error)
         return response.json()
       })
       .then((data) => {
+        console.log("tengo carrito "+data.cartId)
         const cartId = data.cartId
         const url = 'http://localhost:8080/api/carts/' + cartId + '/product/' + id
         const options = {

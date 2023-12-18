@@ -6,7 +6,7 @@ import * as viewController from "../controllers/view.controller.js"
 router.get("/", viewController.getAll )   // Retrieve all products
 router.get("/realTimeProducts", viewController.getRealTimeProducts )  
 router.get("/cart/:cid", viewController.cartView )
-router.get("/chat", viewController.chatView)
+//router.get("/chat", viewController.chatView)
 
 export default router
 

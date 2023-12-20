@@ -1,6 +1,5 @@
 
 class BaseRepository {
-
     constructor(model) {
         this.model = model
     }
@@ -25,7 +24,6 @@ class BaseRepository {
     async delete(id) {
         return await this.model.findByIdAndDelete(id)
     }
-
 
 }
 

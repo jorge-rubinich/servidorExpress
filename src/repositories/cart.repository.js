@@ -36,7 +36,7 @@ class CartRepository extends BaseRepository {
     async updateProduct(cartId, productId, quantity) {
         const cart = await this.model.findById(cartId);
         const isInCart = cart.products.findIndex((p) => p.product._id.equals(productId));
-    
+        console.log("cart.repository.isincart ",isInCart)
         if (isInCart===-1) {
             return null
         } else {

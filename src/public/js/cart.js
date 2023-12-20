@@ -54,12 +54,10 @@ async function removeProduct(id) {
             fetch(url, options)
               .then((response) => {
                 // evaluate the API response
-                console.log(Response.status)
                 if (!response.status===200) throw new Error(response.error)
               })
           })
         } catch (error) {
-          console.log(error)
           return false
         }
         await Swal.fire({

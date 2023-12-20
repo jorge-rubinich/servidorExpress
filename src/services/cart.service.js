@@ -59,7 +59,7 @@ class CartService extends BaseService {
         return await this.repository.updateProduct(cartId, productId, quantity)
     }
 
-    async deleteProduct (cartId, productId) {
+    async deleteProduct (cid, pid) {
         try {
             const cart= await this.repository.getById(cid)
             if (!cart) {

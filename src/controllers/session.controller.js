@@ -13,6 +13,8 @@ const failRegister = async (req, res) => {
 }
 
 const login = (req, res) => {
+    console.log("login")
+    console.log(req.session.user)
     res.status(200).send({ status: "success", user: req.session.user })      
 }
 

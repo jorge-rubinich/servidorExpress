@@ -32,10 +32,11 @@ app.use((err, req, res, next) => {
 // Set session
 app.use(session({
     store: new MongoStore({mongoUrl: URI}),
+    name: "session",
     secret: "secret",
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 600000},
+    cookie: {maxAge: 1000*60*60},
 }))
 
 // Set passport

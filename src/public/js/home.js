@@ -13,7 +13,6 @@ async function addToCart(id) {
     await fetch(url, options)
       .then((response) => {
         // evaluate the API response
-        console.log(Response.ok)
         if (!response.ok) throw new Error(response.error)
         return response.json()
       })

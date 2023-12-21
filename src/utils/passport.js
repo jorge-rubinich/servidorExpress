@@ -42,15 +42,19 @@ passport.use("register",
     new LocalStrategy(
         {usernameField: "email"},
         async (email, password, done) => {
+            console.log("local strategy")
+
         if ( !email || !password){
             return done(null, false, {message: "ingrese email y contraseña."})
         }
         try {
             const user = await userService.getByEmail(email)
+            console.log(user)
             if (!user) {
                 return done(null, false, {message: "Usuario o contraseña incorrecta"})
             }
             const isPasswordValid = await compareData(password,user.password)
+            console.log("pass: "+isPasswordValid)
             if (!isPasswordValid){
                 return done(null, false, {message: "Usuario o contraseña incorrecta"})
             }

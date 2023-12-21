@@ -51,7 +51,11 @@ const getCartById = async (req, res)=>{
 const addProduct= async (req, res)=>{
     const {cid, pid} = req.params
     try {
-        return cartService.addProduct(cid, pid)
+        const result= cartService.addProduct(cid, pid)
+        if (result.error) {
+            return res.status(500).send({status: "error", error: result.error})
+        }
+        res.status(200).send({status: "success", result})
     } catch (error) {
         res.status(500).send({status: "error", error: error.message})   
     }

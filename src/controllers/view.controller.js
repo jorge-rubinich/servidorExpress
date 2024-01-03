@@ -6,6 +6,8 @@ import { moneyFormat } from "../utils.js"
 
 // retrieve all products for the home page
 const getAll = async (req, res)=>{
+    // if have no user..
+    if (!user) {  user= {cart: null} }
     try {
         const results = await productService.getPaged(req.query)
         results.docs.forEach(p => {
@@ -21,7 +23,7 @@ const getAll = async (req, res)=>{
         hasNextPage: results.hasNextPage, 
         prevLink: results.hasPrevPage? createLink(req.query, results.prevPage) : null,
         nextLink: results.hasNextPage? createLink(req.query, results.nextPage) : null,
-        user : req.session.user
+        user : req.user
         }
         res.render("home",retObj)   
     } catch (error) {

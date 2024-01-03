@@ -1,14 +1,14 @@
 import { Router } from "express"
 import * as sessionController from "../controllers/session.controller.js"
 import passport from "passport"
-import { hashData, compareData } from "../utils.js"
+import { hashData, compareData, authToken } from "../utils.js"
 
 const router = Router()
 
 const registerOptions= {failureRedirect: "/api/sessions/failRegister", failureFlash: true}
 const loginOptions= {failureRedirect: "/api/sessions/failLogin", failureFlash: true}
 
-router.get("/current", 	sessionController.getCurrent)
+router.get("/current", authToken,	sessionController.getCurrent)
 router.post("/register", passport.authenticate("register", registerOptions),
                          sessionController.register)
 router.get("/failRegister", sessionController.failRegister)

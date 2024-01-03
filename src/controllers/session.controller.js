@@ -1,9 +1,12 @@
+import { generateToken, authToken } from "../utils.js"
+
 const getCurrent = async (req, res) => {
     res.render("current", { user: req.session.user })
  }
 
 const register = async (req, res) => {
-    res.status(200).send({ status: "success", user: req.session.user })
+    const accessToken = generateToken(req.user)
+    res.status(200).send({ status: "success", accessToken })
 }
 
 const failRegister = async (req, res) => {
@@ -14,13 +17,12 @@ const failRegister = async (req, res) => {
 
 const login = (req, res) => {
     // the strategy return the user in req.user
-    req.session.user= req.user
-    
-    res.status(200).send({ status: "success", user: req.session.user })      
+    const accessToken = generateToken(req.user)    
+    res.status(200).send({ status: "success", accessToken })      
 }
 
 const successLogin = async (req, res) => {
-    req.session.user = req.user
+    console.log("successLogin en session.controller.js")
     res.status(200).redirect('/')
 }
 
@@ -36,8 +38,8 @@ const signOut= async (req, res) => {
 }
 
 const githubcallback=     async (req, res) => {
-    req.session.user = req.user
-    res.status(200).redirect('/');
+    const accessToken = generateToken(req.user)    
+    res.status(200).send({ status: "success", accessToken }).redirect('/')
 }
 
 const failGithub= (req, res) => {

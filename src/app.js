@@ -5,8 +5,8 @@ import { __dirname } from "./utils.js"
 import handlebars from "express-handlebars"
 //import socketServer from "./sockets/socketServer.js"
 import sysVars from "./config/index.js"
-import session from "express-session"
-import MongoStore from "connect-mongo"
+//import session from "express-session"
+//import MongoStore from "connect-mongo"
 import flash from "express-flash"
 import "./utils/passport.js"
 import passport from "passport"
@@ -30,18 +30,18 @@ app.use((err, req, res, next) => {
    });
 
 // Set session
-app.use(session({
+/* app.use(session({
     store: new MongoStore({mongoUrl: URI}),
     name: "session",
     secret: "secret",
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 1000*60*60},
-}))
+})) */
 
 // Set passport
 app.use(passport.initialize())  
-app.use(passport.session())
+//app.use(passport.session())
 app.use(flash())
 
 
